@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TaskFlow Pro | Dark Edition</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        // Cấu hình Tailwind hỗ trợ class 'dark'
+        tailwind.config = { darkMode: 'class' }
+    </script>
+
+    <style>
+        body { font-family: 'Inter', sans-serif; transition: background-color 0.3s ease; }
+        .matrix-box { min-height: 150px; }
+        .task-item { transition: all 0.2s ease; cursor: grab; }
+        .ghost-class { opacity: 0.2; background: #6366f1 !important; border: 2px dashed #4f46e5 !important; }
+        .progress-ring { transition: stroke-dashoffset 0.5s ease; }
+    </style>
+</head>
+<body class="p-4 sm:p-8 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
+
+    <div class="max-w-6xl mx-auto">
+        <header class="flex flex-col md:flex-row items-center justify-between gap-6 mb-8 bg-white dark:bg-slate-900 p-6 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-800">
+            <div class="flex items-center gap-4">
+                <div class="bg-indigo-600 w-14 h-14 rounded-2xl flex items-center justify-center text-white shadow-xl rotate-3">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-black tracking-tighter uppercase leading-none">TASK<span class="text-indigo-500 italic">FLOW</span></h1>
+                    <p id="date-now" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1 italic"></p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button onclick="toggleDarkMode()" class="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:scale-110 transition-all border border-slate-200 dark:border-slate-700">
+                    <span id="dark-icon-sun" class="hidden dark:block">☀️</span>
+                    <span id="dark-icon-moon" class="block dark:hidden">🌙</span>
+                </button>
+                
+                <div class="flex items-center gap-4 border-l border-slate-100 dark:border-slate-800 pl-6">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-[10px] font-black text-slate-400 uppercase">Hiệu suất</p>
+                        <h3 id="stat-percent" class="text-xl font-black text-indigo-500">0%</h3>
+                    </div>
+                    <div class="relative w-12 h-12">
+                        <svg class="w-full h-full" viewBox="0 0 36 36">
+                            <path class="text-slate-100 dark:text-slate-800" stroke-width="4" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <path id="progress-circle" class="text-indigo-500 progress-ring" stroke-width="4" stroke-dasharray="0, 100" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="max-w-3xl mx-auto mb-10">
+            <form id="taskForm" class="flex flex-col sm:flex-row gap-3 bg-white dark:bg-slate-900 p-3 rounded-[2rem] shadow-xl border border-indigo-50 dark:border-slate-800">
+                <input type="text" id="taskInput" placeholder="Nhập việc cần làm..." 
+                       class="flex-1 px-6 py-4 rounded-2xl outline-none bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 transition-all font-semibold">
+                <button type="submit" class="bg-indigo-600 text-white px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-indigo-700 shadow-lg active:scale-95 transition-all">THÊM</button>
+            </form>
+            <div class="flex justify-center gap-6 mt-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest italic">
+                <button onclick="clearCompleted()" class="hover:text-rose-500 transition-colors">Dọn dẹp 🧹</button>
+                <button onclick="downloadBackup()" class="hover:text-indigo-500 transition-colors">Sao lưu 💾</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] border-2 border-rose-100 dark:border-rose-900/30 flex flex-col overflow-hidden shadow-sm">
+                <div class="bg-rose-50/50 dark:bg-rose-900/10 px-6 py-4 flex justify-between items-center border-b border-rose-100 dark:border-rose-900/20">
+                    <span class="font-black text-xs text-rose-600 dark:text-rose-400 uppercase tracking-widest">🔥 Làm ngay</span>
+                    <span id="cnt-do" class="bg-rose-500 text-white text-[10px] font-black px-3 py-1 rounded-full">0</span>
+                </div>
+                <div id="list-do" class="matrix-box p-4 space-y-3"></div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] border-2 border-indigo-100 dark:border-indigo-900/30 flex flex-col overflow-hidden shadow-sm">
+                <div class="bg-indigo-50/50 dark:bg-indigo-900/10 px-6 py-4 flex justify-between items-center border-b border-indigo-100 dark:border-indigo-900/20">
+                    <span class="font-black text-xs text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">📅 Lên lịch</span>
+                    <span id="cnt-plan" class="bg-indigo-500 text-white text-[10px] font-black px-3 py-1 rounded-full">0</span>
+                </div>
+                <div id="list-plan" class="matrix-box p-4 space-y-3"></div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] border-2 border-amber-100 dark:border-amber-900/30 flex flex-col overflow-hidden shadow-sm">
+                <div class="bg-amber-50/50 dark:bg-amber-900/10 px-6 py-4 flex justify-between items-center border-b border-amber-100 dark:border-amber-900/20">
+                    <span class="font-black text-xs text-amber-600 dark:text-amber-400 uppercase tracking-widest">👥 Ủy quyền</span>
+                    <span id="cnt-delegate" class="bg-amber-500 text-white text-[10px] font-black px-3 py-1 rounded-full">0</span>
+                </div>
+                <div id="list-delegate" class="matrix-box p-4 space-y-3"></div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] border-2 border-slate-200 dark:border-slate-800 flex flex-col overflow-hidden shadow-sm">
+                <div class="bg-slate-50 dark:bg-slate-800/50 px-6 py-4 flex justify-between items-center border-b border-slate-200 dark:border-slate-800">
+                    <span class="font-black text-xs text-slate-500 dark:text-slate-400 uppercase tracking-widest">🗑️ Loại bỏ</span>
+                    <span id="cnt-ignore" class="bg-slate-400 text-white text-[10px] font-black px-3 py-1 rounded-full">0</span>
+                </div>
+                <div id="list-ignore" class="matrix-box p-4 space-y-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const DB_KEY = 'TaskFlow_Final_V4';
+        let tasks = [];
+
+        // --- DARK MODE ---
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        // --- LOGIC ---
+        function init() {
+            // Theme init
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            }
+            
+            const stored = localStorage.getItem(DB_KEY);
+            tasks = stored ? JSON.parse(stored) : [];
+            document.getElementById('date-now').innerText = new Date().toLocaleDateString('vi-VN', { weekday: 'long', day: 'numeric', month: 'long' });
+            render();
+            initDragAndDrop();
+        }
+
+        function save() {
+            localStorage.setItem(DB_KEY, JSON.stringify(tasks));
+            render();
+        }
+
+        document.getElementById('taskForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const input = document.getElementById('taskInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const isUrgent = /gấp|khẩn|ngay|luôn|ưu tiên/i.test(text);
+            const isImportant = isUrgent || /họp|báo cáo|dự án|hợp đồng|học/i.test(text) || text.length > 20;
+
+            tasks.unshift({ id: Date.now(), text, isUrgent, isImportant, done: false });
+            input.value = '';
+            save();
+        });
+
+        function toggleTask(id) {
+            const task = tasks.find(t => t.id === id);
+            if (task) {
+                task.done = !task.done;
+                if (task.done) confetti({ particleCount: 100, spread: 70, origin: { y: 0.8 }, colors: ['#6366f1', '#f43f5e'] });
+            }
+            save();
+        }
+
+        function removeTask(id) {
+            tasks = tasks.filter(t => t.id !== id);
+            save();
+        }
+
+        function clearCompleted() {
+            tasks = tasks.filter(t => !t.done);
+            save();
+        }
+
+        function initDragAndDrop() {
+            ['list-do', 'list-plan', 'list-delegate', 'list-ignore'].forEach(id => {
+                Sortable.create(document.getElementById(id), {
+                    group: 'matrix',
+                    animation: 200,
+                    ghostClass: 'ghost-class',
+                    onEnd: (evt) => {
+                        const taskId = parseInt(evt.item.getAttribute('data-id'));
+                        const task = tasks.find(t => t.id === taskId);
+                        if (task) {
+                            task.isUrgent = (evt.to.id === 'list-do' || evt.to.id === 'list-delegate');
+                            task.isImportant = (evt.to.id === 'list-do' || evt.to.id === 'list-plan');
+                            localStorage.setItem(DB_KEY, JSON.stringify(tasks));
+                            renderCounts();
+                            updateStats();
+                        }
+                    }
+                });
+            });
+        }
+
+        function render() {
+            const lists = { do: document.getElementById('list-do'), plan: document.getElementById('list-plan'), delegate: document.getElementById('list-delegate'), ignore: document.getElementById('list-ignore') };
+            Object.values(lists).forEach(l => l.innerHTML = '');
+
+            tasks.forEach(t => {
+                const q = t.isImportant && t.isUrgent ? 'do' : t.isImportant ? 'plan' : t.isUrgent ? 'delegate' : 'ignore';
+                const el = document.createElement('div');
+                el.setAttribute('data-id', t.id);
+                el.className = `task-item flex items-center justify-between p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm ${t.done ? 'opacity-40' : ''}`;
+                el.innerHTML = `
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleTask(${t.id})" class="w-5 h-5 rounded-lg accent-indigo-500 cursor-pointer">
+                        <span class="text-sm font-bold truncate ${t.done ? 'line-through opacity-50' : ''}">${t.text}</span>
+                    </div>
+                    <button onclick="removeTask(${t.id})" class="text-slate-300 hover:text-rose-500 transition-colors">✕</button>
+                `;
+                lists[q].appendChild(el);
+            });
+            renderCounts();
+            updateStats();
+        }
+
+        function renderCounts() {
+            const c = { do:0, plan:0, delegate:0, ignore:0 };
+            tasks.forEach(t => {
+                const q = t.isImportant && t.isUrgent ? 'do' : t.isImportant ? 'plan' : t.isUrgent ? 'delegate' : 'ignore';
+                c[q]++;
+            });
+            Object.keys(c).forEach(k => document.getElementById('cnt-'+k).innerText = c[k]);
+        }
+
+        function updateStats() {
+            const percent = tasks.length ? Math.round((tasks.filter(t => t.done).length / tasks.length) * 100) : 0;
+            document.getElementById('stat-percent').innerText = percent + "%";
+            document.getElementById('progress-circle').setAttribute('stroke-dasharray', `${percent}, 100`);
+        }
+
+        function downloadBackup() {
+            const blob = new Blob([JSON.stringify(tasks, null, 2)], {type: 'application/json'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'TaskFlow_Backup.json';
+            a.click();
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
