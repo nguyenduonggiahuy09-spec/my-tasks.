@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" class="dark">
 <head>
     <meta charset="UTF-8">
-    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.pnj">
+    <link rel="manifest" href="manifest.json">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TaskFlow Pro | Huy's Little Stories Edition</title>
+    <title>TaskFlow Pro | Huy's Stories</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -20,7 +22,6 @@
         .matrix-box { min-height: 150px; }
         .task-item { transition: all 0.2s ease; cursor: grab; }
         .ghost-class { opacity: 0.2; background: #6366f1 !important; border: 2px dashed #4f46e5 !important; }
-        .progress-ring { transition: stroke-dashoffset 0.5s ease; }
     </style>
 </head>
 <body class="p-4 sm:p-8 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
@@ -38,7 +39,7 @@
             </div>
 
             <div class="flex items-center gap-4">
-                <button onclick="toggleDarkMode()" class="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">🌙</button>
+                <button onclick="toggleDarkMode()" class="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">🌙/☀️</button>
                 <div class="flex items-center gap-4 border-l dark:border-slate-800 pl-6">
                     <div class="text-right hidden sm:block">
                         <p class="text-[10px] font-black text-slate-400 uppercase">Hiệu suất</p>
@@ -69,7 +70,7 @@
             <form id="taskForm" class="flex flex-col sm:flex-row gap-3 bg-white dark:bg-slate-900 p-3 rounded-[2.2rem] shadow-xl border border-indigo-50 dark:border-slate-800">
                 <input type="text" id="taskInput" placeholder="Huy muốn làm gì hôm nay? (Gõ 'gấp' để ưu tiên)" 
                        class="flex-1 px-6 py-4 rounded-2xl outline-none bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-indigo-500 transition-all font-semibold">
-                <button type="submit" class="bg-indigo-600 text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-indigo-700 shadow-lg active:scale-95 transition-all">THÊM VIỆC</button>
+                <button type="submit" class="bg-indigo-600 text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-indigo-700 shadow-lg active:scale-95 transition-all text-center">THÊM VIỆC</button>
             </form>
             <div class="flex justify-center gap-6 mt-4 text-[10px] font-black text-slate-400 uppercase tracking-widest italic">
                 <button onclick="clearCompleted()" class="hover:text-rose-500">Dọn dẹp 🧹</button>
@@ -85,7 +86,6 @@
                 </div>
                 <div id="list-do" class="matrix-box p-4 space-y-3"></div>
             </div>
-
             <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] border-2 border-indigo-100 dark:border-indigo-900/20 flex flex-col overflow-hidden shadow-sm">
                 <div class="bg-indigo-50/50 dark:bg-indigo-900/10 px-6 py-4 flex justify-between items-center border-b border-indigo-100 dark:border-indigo-900/20">
                     <span class="font-black text-[10px] text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">📅 Lên lịch</span>
@@ -93,7 +93,6 @@
                 </div>
                 <div id="list-plan" class="matrix-box p-4 space-y-3"></div>
             </div>
-
             <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] border-2 border-amber-100 dark:border-amber-900/20 flex flex-col overflow-hidden shadow-sm">
                 <div class="bg-amber-50/50 dark:bg-amber-900/10 px-6 py-4 flex justify-between items-center border-b border-amber-100 dark:border-amber-900/20">
                     <span class="font-black text-[10px] text-amber-600 dark:text-amber-400 uppercase tracking-widest">👥 Ủy quyền</span>
@@ -101,7 +100,6 @@
                 </div>
                 <div id="list-delegate" class="matrix-box p-4 space-y-3"></div>
             </div>
-
             <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] border-2 border-slate-200 dark:border-slate-800 flex flex-col overflow-hidden shadow-sm">
                 <div class="bg-slate-50 dark:bg-slate-800/50 px-6 py-4 flex justify-between items-center border-b border-slate-200 dark:border-slate-800">
                     <span class="font-black text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest">🗑️ Loại bỏ</span>
@@ -113,7 +111,7 @@
     </div>
 
     <script>
-        const DB_KEY = 'TaskFlow_Huy_Stories_V5';
+        const DB_KEY = 'TaskFlow_Final_V6';
         let tasks = [];
 
         // --- POMODORO LOGIC ---
@@ -130,7 +128,7 @@
                 clearInterval(timer);
                 timer = null;
                 confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
-                alert("Hết giờ tập trung! Huy hãy nghỉ ngơi 5 phút nhé.");
+                alert("Hoàn thành! Huy nghỉ ngơi chút nhé.");
                 timeLeft = 25 * 60;
                 updateTimer();
                 startBtn.innerText = "BẮT ĐẦU";
@@ -205,10 +203,8 @@
         }
 
         function clearCompleted() {
-            if(confirm("Xóa tất cả việc đã hoàn thành?")) {
-                tasks = tasks.filter(t => !t.done);
-                save();
-            }
+            tasks = tasks.filter(t => !t.done);
+            save();
         }
 
         function initDragAndDrop() {
@@ -270,7 +266,6 @@
 
         window.addEventListener('load', init);
 
-        // Đăng ký Service Worker (Offline)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW error:', err));
