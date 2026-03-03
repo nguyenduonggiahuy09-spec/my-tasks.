@@ -246,6 +246,44 @@
         }
 
         window.addEventListener('load', init);
+        let timer;
+let timeLeft = 25 * 60;
+const timerDisplay = document.getElementById('timer-display');
+const startBtn = document.getElementById('timer-start');
+
+function updateTimer() {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    timerDisplay.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    if (timeLeft === 0) {
+        clearInterval(timer);
+        confetti(); // Pháo hoa khi hoàn thành 1 phiên làm việc
+        alert("Chúc mừng! Bạn đã hoàn thành 25 phút tập trung. Hãy nghỉ ngơi chút nhé!");
+        timeLeft = 25 * 60;
+    }
+}
+
+startBtn.addEventListener('click', () => {
+    if (timer) {
+        clearInterval(timer);
+        timer = null;
+        startBtn.innerText = "Bắt đầu";
+    } else {
+        timer = setInterval(() => {
+            timeLeft--;
+            updateTimer();
+        }, 1000);
+        startBtn.innerText = "Tạm dừng";
+    }
+});
+
+document.getElementById('timer-reset').addEventListener('click', () => {
+    clearInterval(timer);
+    timer = null;
+    timeLeft = 25 * 60;
+    updateTimer();
+    startBtn.innerText = "Bắt đầu";
+});
     </script>
 </body>
 </html>
