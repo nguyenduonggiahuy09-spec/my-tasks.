@@ -5,7 +5,7 @@
     <link rel="apple-touch-icon" href="image_19bf1f.jpg">
     <link rel="manifest" href="manifest.json">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TaskFlow Pro | Huy's Stories Music</title>
+    <title>TaskFlow Pro | Huy's Stories Custom Music</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&family=Playfair_Display:ital,wght@0,900;1,900&display=swap" rel="stylesheet">
@@ -31,7 +31,7 @@
         <header class="flex flex-col lg:flex-row items-center justify-between gap-6 mb-8 bg-white dark:bg-slate-900 p-6 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-800">
             <div class="flex items-center gap-4">
                 <div class="bg-indigo-600 w-14 h-14 rounded-2xl flex items-center justify-center text-white shadow-xl rotate-3">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 </div>
                 <div>
                     <h1 class="text-2xl font-black uppercase italic tracking-tighter leading-none text-slate-900 dark:text-white">TASK<span class="text-indigo-500">FLOW</span></h1>
@@ -41,7 +41,7 @@
 
             <div class="flex flex-wrap justify-center items-center gap-6">
                 <div class="text-right border-r dark:border-slate-800 pr-6 hidden md:block">
-                    <p id="current-date" class="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1 italic">CHỜ CHÚT...</p>
+                    <p id="current-date" class="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1 italic">ĐANG TẢI...</p>
                     <h3 id="current-time" class="text-xl font-black text-indigo-500 leading-none tracking-tighter">00:00:00</h3>
                 </div>
 
@@ -67,20 +67,25 @@
 
         <div id="settings-panel" class="hidden mb-10 p-8 bg-white dark:bg-slate-900 border-2 border-indigo-100 dark:border-indigo-900 rounded-[2.8rem] shadow-2xl relative overflow-hidden">
             <div class="relative z-10 space-y-4">
-                <h3 class="font-playfair font-black italic text-xl text-indigo-500">Huy's AI Companion</h3>
-                <p class="text-xs opacity-70 italic leading-relaxed text-slate-600 dark:text-slate-400">Chào Huy! Nhập mã Gemini API Key của riêng bạn để kích hoạt trợ lý AI. Mã này chỉ lưu cục bộ trên máy Huy nhé.</p>
-                <div class="flex flex-col sm:flex-row gap-2">
-                    <input type="password" id="api-key-input" placeholder="Dán mã API của Huy tại đây..." class="flex-1 px-5 py-3 rounded-2xl outline-none bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-sm focus:ring-2 focus:ring-indigo-500 transition-all">
-                    <button onclick="saveApiKey()" class="bg-indigo-600 text-white px-6 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest active:scale-95 shadow-md">Lưu mã</button>
+                <h3 class="font-playfair font-black italic text-xl text-indigo-500">Cấu hình hệ thống</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Gemini API Key</p>
+                        <input type="password" id="api-key-input" placeholder="Dán mã API của Huy..." class="w-full px-5 py-3 rounded-2xl outline-none bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-sm focus:ring-2 focus:ring-indigo-500 transition-all">
+                    </div>
+                    <div class="space-y-2">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Link nhạc cá nhân (MP3)</p>
+                        <input type="text" id="custom-music-input" placeholder="Dán link bài hát Huy thích (.mp3)..." class="w-full px-5 py-3 rounded-2xl outline-none bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-sm focus:ring-2 focus:ring-indigo-500 transition-all">
+                    </div>
                 </div>
-                <p class="text-[10px] text-indigo-500 font-bold underline cursor-pointer inline-block" onclick="window.open('https://aistudio.google.com/app/apikey')">Lấy mã miễn phí tại đây ↗</p>
+                <button onclick="saveSettings()" class="bg-indigo-600 text-white w-full py-4 rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] active:scale-[0.98] shadow-lg transition-all">LƯU TẤT CẢ THAY ĐỔI</button>
             </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             <div class="p-6 bg-indigo-600 rounded-[2.5rem] text-white flex flex-col justify-between shadow-xl min-h-[160px]">
                 <div>
-                    <p class="text-[10px] font-black uppercase tracking-widest opacity-70 leading-none">Focus Timer</p>
+                    <p class="text-[10px] font-black uppercase tracking-widest opacity-70">Focus Timer</p>
                     <h2 id="timer-display" class="text-4xl font-black mt-2">25:00</h2>
                 </div>
                 <div class="flex gap-2">
@@ -92,58 +97,53 @@
             <div class="p-6 bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-xl flex flex-col justify-between min-h-[160px]">
                 <div>
                     <p class="text-[10px] font-black text-indigo-500 uppercase tracking-widest leading-none">Huy's Station</p>
-                    <h3 id="track-name" class="text-[13px] font-bold mt-2 italic leading-tight text-slate-500">Nhấn nút để nghe nhạc chill...</h3>
+                    <h3 id="track-name" class="text-[13px] font-bold mt-2 italic leading-tight text-slate-500 truncate">Sẵn sàng nghe nhạc...</h3>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button onclick="playMusic('lofi')" title="Deep Focus Lo-fi" class="flex-1 bg-slate-100 dark:bg-slate-800 p-3 rounded-2xl hover:bg-indigo-50 dark:hover:bg-indigo-950/50 transition-all text-xl">☕</button>
-                    <button onclick="playMusic('ballad')" title="Huy's Folk Ballad" class="flex-1 bg-slate-100 dark:bg-slate-800 p-3 rounded-2xl hover:bg-rose-50 dark:hover:bg-rose-950/50 transition-all text-xl">🎸</button>
+                    <button id="play-custom-btn" onclick="playCustomMusic()" class="flex-1 bg-indigo-50 dark:bg-indigo-900/30 p-3 rounded-2xl hover:bg-indigo-100 transition-all text-xl">🎵</button>
+                    <button onclick="playDemoMusic()" class="flex-1 bg-slate-50 dark:bg-slate-800 p-3 rounded-2xl hover:bg-slate-100 transition-all text-xl">☕</button>
                     <button onclick="stopMusic()" class="px-4 py-3 bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-rose-500 rounded-2xl text-[9px] font-black uppercase transition-all">Dừng</button>
                 </div>
                 <audio id="audio-player" loop></audio>
             </div>
 
-            <div class="flex flex-col h-full gap-3">
-                <button onclick="getAIAdvice()" class="h-full bg-gradient-to-br from-purple-600 to-indigo-600 text-white p-6 rounded-[2.5rem] font-black text-xs uppercase tracking-[0.2em] shadow-xl active:scale-95 hover:brightness-110 transition-all">
-                    ✨ TRỢ LÝ AI PHÂN TÍCH
-                </button>
-            </div>
+            <button onclick="getAIAdvice()" class="h-full bg-gradient-to-br from-purple-600 to-indigo-600 text-white p-6 rounded-[2.5rem] font-black text-xs uppercase tracking-[0.2em] shadow-xl active:scale-95 hover:brightness-110 transition-all">
+                ✨ TRỢ LÝ AI PHÂN TÍCH
+            </button>
         </div>
 
-        <div id="ai-response" class="hidden mb-12 p-6 bg-white dark:bg-slate-900 border border-indigo-100 dark:border-slate-800 rounded-[2.5rem] text-sm italic text-indigo-600 dark:text-indigo-400 shadow-sm"></div>
+        <div id="ai-response" class="hidden mb-12 p-6 bg-white dark:bg-slate-900 border border-indigo-100 dark:border-slate-800 rounded-[2.5rem] text-sm italic text-indigo-600 dark:text-indigo-400 shadow-sm animate-pulse"></div>
 
         <form id="taskForm" class="flex flex-col sm:flex-row gap-3 mb-12 bg-white dark:bg-slate-900 p-3 rounded-[2.2rem] shadow-xl border border-slate-100 dark:border-slate-800">
-            <input type="text" id="taskInput" placeholder="Huy muốn làm gì hôm nay? (Ví dụ: Gấp - Học bài)" class="flex-1 px-6 py-4 rounded-2xl outline-none bg-slate-50 dark:bg-slate-800 text-sm font-semibold focus:ring-2 focus:ring-indigo-500 transition-all">
+            <input type="text" id="taskInput" placeholder="Huy muốn làm gì hôm nay? (Ví dụ: Gấp - Viết nhạc)" class="flex-1 px-6 py-4 rounded-2xl outline-none bg-slate-50 dark:bg-slate-800 text-sm font-semibold focus:ring-2 focus:ring-indigo-500 transition-all">
             <button type="submit" class="bg-indigo-600 text-white px-8 py-4 rounded-2xl font-black text-xs uppercase shadow-lg active:scale-95 transition-all">THÊM VIỆC</button>
         </form>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-white dark:bg-slate-900 rounded-[2.8rem] border-2 border-rose-100 dark:border-rose-900/20 overflow-hidden shadow-sm hover:border-rose-200 transition-all">
+            <div class="bg-white dark:bg-slate-900 rounded-[2.8rem] border-2 border-rose-100 dark:border-rose-900/20 overflow-hidden shadow-sm">
                 <div class="bg-rose-50/50 dark:bg-rose-900/10 px-6 py-5 flex justify-between items-center border-b border-rose-100 dark:border-rose-900/20">
-                    <div><span class="text-[10px] font-black text-rose-600 uppercase tracking-widest italic leading-none">🔥 LÀM NGAY</span><p class="font-playfair text-xl font-black italic mt-1 leading-none">Do Now</p></div>
+                    <div><span class="text-[10px] font-black text-rose-600 uppercase tracking-widest italic">🔥 LÀM NGAY</span><p class="font-playfair text-xl font-black italic mt-1">Do Now</p></div>
                     <span id="cnt-do" class="text-3xl font-black text-rose-600/30">0</span>
                 </div>
                 <div id="list-do" class="matrix-box p-4 space-y-3"></div>
             </div>
-
-            <div class="bg-white dark:bg-slate-900 rounded-[2.8rem] border-2 border-indigo-100 dark:border-indigo-900/20 overflow-hidden shadow-sm hover:border-indigo-200 transition-all">
+            <div class="bg-white dark:bg-slate-900 rounded-[2.8rem] border-2 border-indigo-100 dark:border-indigo-900/20 overflow-hidden shadow-sm">
                 <div class="bg-indigo-50/50 dark:bg-indigo-900/10 px-6 py-5 flex justify-between items-center border-b border-indigo-100 dark:border-indigo-900/20">
-                    <div><span class="text-[10px] font-black text-indigo-600 uppercase tracking-widest italic leading-none">📅 LÊN LỊCH</span><p class="font-playfair text-xl font-black italic mt-1 leading-none">Schedule</p></div>
+                    <div><span class="text-[10px] font-black text-indigo-600 uppercase tracking-widest italic">📅 LÊN LỊCH</span><p class="font-playfair text-xl font-black italic mt-1">Schedule</p></div>
                     <span id="cnt-plan" class="text-3xl font-black text-indigo-600/30">0</span>
                 </div>
                 <div id="list-plan" class="matrix-box p-4 space-y-3"></div>
             </div>
-
             <div class="bg-white dark:bg-slate-900 rounded-[2.8rem] border-2 border-amber-100 dark:border-amber-900/20 overflow-hidden shadow-sm">
                 <div class="bg-amber-50/50 dark:bg-amber-900/10 px-6 py-5 flex justify-between items-center border-b border-amber-100 dark:border-amber-900/20">
-                    <div><span class="text-[10px] font-black text-amber-600 uppercase tracking-widest italic leading-none">👥 ỦY QUYỀN</span><p class="font-playfair text-xl font-black italic mt-1 leading-none">Delegate</p></div>
+                    <div><span class="text-[10px] font-black text-amber-600 uppercase tracking-widest italic">👥 ỦY QUYỀN</span><p class="font-playfair text-xl font-black italic mt-1">Delegate</p></div>
                     <span id="cnt-delegate" class="text-3xl font-black text-amber-600/30">0</span>
                 </div>
                 <div id="list-delegate" class="matrix-box p-4 space-y-3"></div>
             </div>
-
             <div class="bg-white dark:bg-slate-900 rounded-[2.8rem] border-2 border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
                 <div class="bg-slate-50 dark:bg-slate-800/50 px-6 py-5 flex justify-between items-center border-b border-slate-200 dark:border-slate-800">
-                    <div><span class="text-[10px] font-black text-slate-500 uppercase tracking-widest italic leading-none">🗑️ LOẠI BỎ</span><p class="font-playfair text-xl font-black italic mt-1 leading-none">Eliminate</p></div>
+                    <div><span class="text-[10px] font-black text-slate-500 uppercase tracking-widest italic">🗑️ LOẠI BỎ</span><p class="font-playfair text-xl font-black italic mt-1">Eliminate</p></div>
                     <span id="cnt-ignore" class="text-3xl font-black text-slate-500/30">0</span>
                 </div>
                 <div id="list-ignore" class="matrix-box p-4 space-y-3"></div>
@@ -151,16 +151,17 @@
         </div>
         
         <footer class="text-center mt-12 pb-8">
-            <div class="opacity-30 text-[9px] font-black uppercase tracking-[0.5em]">Huy's Little Stories - Version 12.0</div>
-            <p class="text-[10px] italic text-slate-400 mt-2">Dành cho những người bạn yêu sự thảnh thơi và năng suất.</p>
+            <div class="opacity-30 text-[9px] font-black uppercase tracking-[0.5em]">Huy's Little Stories - Ver 13.0 Custom Music</div>
         </footer>
     </div>
 
     <script>
-        const DB_KEY = 'Huy_Task_Ultimate_V12';
+        const DB_KEY = 'Huy_Task_Ultimate_V13';
         let tasks = [];
-        
-        // --- 1. ĐỒNG HỒ & GIAO DIỆN ---
+        const player = document.getElementById('audio-player');
+        const trackNameDisp = document.getElementById('track-name');
+
+        // --- 1. CORE UTILS ---
         function updateLiveClock() {
             const now = new Date();
             const dateOptions = { weekday: 'long', day: '2-digit', month: '2-digit' };
@@ -170,133 +171,104 @@
         setInterval(updateLiveClock, 1000); updateLiveClock();
 
         function toggleSettings() { document.getElementById('settings-panel').classList.toggle('hidden'); }
-        function saveApiKey() { 
-            const k = document.getElementById('api-key-input').value.trim();
-            if(k) { 
-                localStorage.setItem('gemini_api_key', k); 
-                confetti({ particleCount: 100, spread: 70 });
-                alert("✨ Huy đã lưu mã AI thành công!"); toggleSettings(); 
-            }
-        }
-
         function toggleDarkMode() { 
             document.documentElement.classList.toggle('dark'); 
             localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
         }
 
-        // --- 2. MUSIC STATION ---
-        const playlist = {
-            lofi: { name: "Deep Focus Lo-fi ☕", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
-            ballad: { name: "Huy's Folk Ballad 🎸", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" }
-        };
-        const player = document.getElementById('audio-player');
-        const trackNameDisp = document.getElementById('track-name');
+        function saveSettings() {
+            const apiKey = document.getElementById('api-key-input').value.trim();
+            const musicUrl = document.getElementById('custom-music-input').value.trim();
+            if(apiKey) localStorage.setItem('gemini_api_key', apiKey);
+            if(musicUrl) localStorage.setItem('huy_custom_music', musicUrl);
+            confetti({ particleCount: 150 });
+            alert("✨ Đã cập nhật cấu hình cho Huy!"); toggleSettings();
+        }
 
-        function playMusic(type) {
-            player.src = playlist[type].url;
+        // --- 2. MUSIC ENGINE ---
+        function playCustomMusic() {
+            const url = localStorage.getItem('huy_custom_music');
+            if(!url) { alert("Huy ơi, hãy vào cài đặt (⚙️) dán link nhạc .mp3 vào nhé!"); toggleSettings(); return; }
+            player.src = url; player.play();
+            trackNameDisp.innerText = "Đang phát nhạc của Huy 🎸";
+            trackNameDisp.classList.add('text-indigo-500', 'music-pulse');
+        }
+        function playDemoMusic() {
+            player.src = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
             player.play();
-            trackNameDisp.innerText = "Đang phát: " + playlist[type].name;
+            trackNameDisp.innerText = "Đang phát Lo-fi mặc định ☕";
             trackNameDisp.classList.add('text-indigo-500', 'music-pulse');
         }
         function stopMusic() {
-            player.pause();
-            trackNameDisp.innerText = "Nhấn nút để nghe nhạc chill...";
+            player.pause(); trackNameDisp.innerText = "Đã dừng nhạc.";
             trackNameDisp.classList.remove('text-indigo-500', 'music-pulse');
         }
 
         // --- 3. AI ADVICE ---
         async function getAIAdvice() {
             const key = localStorage.getItem('gemini_api_key');
-            if(!key) { alert("Huy ơi, hãy nhập mã AI trong phần cài đặt (⚙️) nhé!"); toggleSettings(); return; }
-            if(tasks.length === 0) { alert("Chưa có việc gì để phân tích cả!"); return; }
-            
+            if(!key) { alert("Nhập API Key trong ⚙️ để dùng AI nhé!"); toggleSettings(); return; }
+            if(tasks.length === 0) return;
             const resArea = document.getElementById('ai-response');
-            resArea.classList.remove('hidden'); resArea.innerText = "✨ Đang kết nối Trợ lý AI, Huy đợi chút nhé...";
-            
+            resArea.classList.remove('hidden'); resArea.innerText = "✨ AI đang phân tích danh sách của Huy...";
             try {
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
                     method: "POST", headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: `Tôi là Huy. Danh sách việc: ${tasks.map(t=>t.text).join(", ")}. Hãy khuyên tôi cách hoàn thành tốt nhất bằng giọng văn ấm áp, ngắn gọn.` }] }] })
+                    body: JSON.stringify({ contents: [{ parts: [{ text: `Tôi là Huy. Việc cần làm: ${tasks.map(t=>t.text).join(", ")}. Khuyên tôi cách làm tốt nhất, giọng văn ấm áp.` }] }] })
                 });
                 const data = await response.json();
-                resArea.innerText = "💡 Lời khuyên cho Huy: " + data.candidates[0].content.parts[0].text;
-            } catch (e) { resArea.innerText = "Lỗi kết nối AI rồi Huy ơi!"; }
+                resArea.innerText = "💡 Gửi Huy: " + data.candidates[0].content.parts[0].text;
+            } catch (e) { resArea.innerText = "Lỗi kết nối AI!"; }
         }
 
-        // --- 4. POMODORO TIMER ---
+        // --- 4. POMODORO ---
         let timer; let timeLeft = 25 * 60;
-        const timerDisplay = document.getElementById('timer-display');
-        const startBtn = document.getElementById('timer-start');
-
-        function updateTimerDisplay() {
+        function updateTimer() {
             const m = Math.floor(timeLeft/60); const s = timeLeft%60;
-            timerDisplay.innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
-            if(timeLeft === 0) { 
-                clearInterval(timer); timer=null; confetti(); alert("Huy xong một phiên rồi! Nghỉ chút nhé."); 
-                timeLeft = 25*60; updateTimerDisplay(); startBtn.innerText = "BẮT ĐẦU";
-            }
+            document.getElementById('timer-display').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+            if(timeLeft === 0) { clearInterval(timer); confetti(); alert("Xong một phiên! Huy nghỉ chút nhé."); timeLeft = 25*60; updateTimer(); }
         }
-        startBtn.onclick = () => {
-            if(timer) { clearInterval(timer); timer = null; startBtn.innerText = "TIẾP TỤC"; }
-            else { timer = setInterval(() => { timeLeft--; updateTimerDisplay(); }, 1000); startBtn.innerText = "TẠM DỪNG"; }
+        document.getElementById('timer-start').onclick = function() {
+            if(timer) { clearInterval(timer); timer = null; this.innerText = "TIẾP TỤC"; }
+            else { timer = setInterval(() => { timeLeft--; updateTimer(); }, 1000); this.innerText = "TẠM DỪNG"; }
         };
-        document.getElementById('timer-reset').onclick = () => { 
-            clearInterval(timer); timer=null; timeLeft=25*60; updateTimerDisplay(); startBtn.innerText="BẮT ĐẦU"; 
-        };
+        document.getElementById('timer-reset').onclick = () => { clearInterval(timer); timer=null; timeLeft=25*60; updateTimer(); document.getElementById('timer-start').innerText="BẮT ĐẦU"; };
 
-        // --- 5. CORE TASK LOGIC ---
+        // --- 5. CORE LOGIC ---
         function init() {
-            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-            }
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark');
             const stored = localStorage.getItem(DB_KEY); tasks = stored ? JSON.parse(stored) : [];
-            const savedKey = localStorage.getItem('gemini_api_key');
-            if(savedKey) document.getElementById('api-key-input').value = savedKey;
-            
+            document.getElementById('api-key-input').value = localStorage.getItem('gemini_api_key') || '';
+            document.getElementById('custom-music-input').value = localStorage.getItem('huy_custom_music') || '';
             render();
-            // Khởi tạo Sortable
             ['list-do', 'list-plan', 'list-delegate', 'list-ignore'].forEach(id => {
                 Sortable.create(document.getElementById(id), { group: 'matrix', animation: 150, onEnd: save });
             });
         }
-
         document.getElementById('taskForm').onsubmit = (e) => {
             e.preventDefault(); const input = document.getElementById('taskInput');
             if(!input.value.trim()) return;
-            const urgent = /gấp|ngay|khẩn|prior/i.test(input.value);
+            const urgent = /gấp|ngay|khẩn/i.test(input.value);
             tasks.unshift({id:Date.now(), text:input.value, urgent, done:false});
             input.value = ''; save();
         };
-
         function toggleDone(id) { 
             const t = tasks.find(x=>x.id===id); t.done = !t.done; 
-            if(t.done) confetti({particleCount:80, spread:60, origin:{y:0.8}});
+            if(t.done) confetti({particleCount:100, spread:70});
             save(); 
         }
         function remove(id) { tasks = tasks.filter(x=>x.id!==id); save(); }
-        function save() { 
-            // Cập nhật lại mảng tasks từ giao diện nếu có kéo thả (có thể mở rộng thêm)
-            localStorage.setItem(DB_KEY, JSON.stringify(tasks)); 
-            render(); 
-        }
-
+        function save() { localStorage.setItem(DB_KEY, JSON.stringify(tasks)); render(); }
         function render() {
             const lists = {do: document.getElementById('list-do'), plan: document.getElementById('list-plan'), delegate: document.getElementById('list-delegate'), ignore: document.getElementById('list-ignore')};
             Object.values(lists).forEach(l => l.innerHTML = '');
-            
             tasks.forEach(t => {
                 const q = t.urgent ? 'do' : 'plan';
                 const el = document.createElement('div');
                 el.className = `task-item p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 flex justify-between items-center shadow-sm ${t.done?'opacity-50':''}`;
-                el.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <input type="checkbox" ${t.done?'checked':''} onchange="toggleDone(${t.id})" class="w-5 h-5 accent-indigo-500 cursor-pointer">
-                        <span class="text-sm font-bold ${t.done?'line-through text-slate-400':''}">${t.text}</span>
-                    </div>
-                    <button onclick="remove(${t.id})" class="text-slate-300 hover:text-rose-500 transition-colors px-2">✕</button>`;
+                el.innerHTML = `<div class="flex items-center gap-3"><input type="checkbox" ${t.done?'checked':''} onchange="toggleDone(${t.id})" class="w-5 h-5 accent-indigo-500 cursor-pointer"><span class="text-sm font-bold ${t.done?'line-through':''}">${t.text}</span></div><button onclick="remove(${t.id})" class="text-slate-300 hover:text-rose-500 px-2">✕</button>`;
                 lists[q].appendChild(el);
             });
-
             document.getElementById('cnt-do').innerText = tasks.filter(t=>t.urgent).length;
             document.getElementById('cnt-plan').innerText = tasks.filter(t=>!t.urgent).length;
             const p = tasks.length ? Math.round((tasks.filter(t=>t.done).length/tasks.length)*100) : 0;
