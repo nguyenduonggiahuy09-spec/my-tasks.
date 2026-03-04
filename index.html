@@ -5,7 +5,7 @@
     <link rel="apple-touch-icon" href="image_19bf1f.jpg">
     <link rel="manifest" href="manifest.json">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TaskFlow Pro | Huy's Stories Custom Music</title>
+    <title>TaskFlow Pro | Huy's Hybrid Music</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&family=Playfair_Display:ital,wght@0,900;1,900&display=swap" rel="stylesheet">
@@ -19,13 +19,12 @@
         body { font-family: 'Inter', sans-serif; transition: all 0.3s ease; }
         .matrix-box { min-height: 120px; }
         .task-item { transition: all 0.2s ease; cursor: grab; }
-        #settings-panel { transition: all 0.3s ease; }
-        #settings-panel.hidden { display: none; opacity: 0; transform: translateY(-10px); }
+        #settings-panel.hidden { display: none; }
         .music-pulse { animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
     </style>
 </head>
-<body class="p-4 sm:p-8 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
+<body class="p-4 sm:p-8 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 italic-style">
 
     <div class="max-w-6xl mx-auto">
         <header class="flex flex-col lg:flex-row items-center justify-between gap-6 mb-8 bg-white dark:bg-slate-900 p-6 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-800">
@@ -34,14 +33,14 @@
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 </div>
                 <div>
-                    <h1 class="text-2xl font-black uppercase italic tracking-tighter leading-none text-slate-900 dark:text-white">TASK<span class="text-indigo-500">FLOW</span></h1>
-                    <p class="font-playfair font-black italic text-[11px] text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] mt-2 leading-none">Huy's Little Stories</p>
+                    <h1 class="text-2xl font-black uppercase italic tracking-tighter leading-none">TASK<span class="text-indigo-500">FLOW</span></h1>
+                    <p class="font-playfair font-black italic text-[11px] text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] mt-2">Huy's Little Stories</p>
                 </div>
             </div>
 
             <div class="flex flex-wrap justify-center items-center gap-6">
                 <div class="text-right border-r dark:border-slate-800 pr-6 hidden md:block">
-                    <p id="current-date" class="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1 italic">ĐANG TẢI...</p>
+                    <p id="current-date" class="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1 italic">CHỜ CHÚT...</p>
                     <h3 id="current-time" class="text-xl font-black text-indigo-500 leading-none tracking-tighter">00:00:00</h3>
                 </div>
 
@@ -59,8 +58,8 @@
                 </div>
                 
                 <div class="flex gap-2">
-                    <button onclick="toggleSettings()" class="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:scale-105 active:scale-95 transition-all">⚙️</button>
-                    <button onclick="toggleDarkMode()" class="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:scale-105 active:scale-95 transition-all">🌙</button>
+                    <button onclick="toggleSettings()" class="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:scale-105 active:scale-95 transition-all text-xl">⚙️</button>
+                    <button onclick="toggleDarkMode()" class="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:scale-105 active:scale-95 transition-all text-xl">🌙</button>
                 </div>
             </div>
         </header>
@@ -74,8 +73,8 @@
                         <input type="password" id="api-key-input" placeholder="Dán mã API của Huy..." class="w-full px-5 py-3 rounded-2xl outline-none bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-sm focus:ring-2 focus:ring-indigo-500 transition-all">
                     </div>
                     <div class="space-y-2">
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Link nhạc cá nhân (MP3)</p>
-                        <input type="text" id="custom-music-input" placeholder="Dán link bài hát Huy thích (.mp3)..." class="w-full px-5 py-3 rounded-2xl outline-none bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-sm focus:ring-2 focus:ring-indigo-500 transition-all">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Link hoặc Tên File Nhạc GitHub</p>
+                        <input type="text" id="custom-music-input" placeholder="Ví dụ: nhac-cua-huy.mp3 hoặc link URL..." class="w-full px-5 py-3 rounded-2xl outline-none bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-sm focus:ring-2 focus:ring-indigo-500 transition-all">
                     </div>
                 </div>
                 <button onclick="saveSettings()" class="bg-indigo-600 text-white w-full py-4 rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] active:scale-[0.98] shadow-lg transition-all">LƯU TẤT CẢ THAY ĐỔI</button>
@@ -90,24 +89,29 @@
                 </div>
                 <div class="flex gap-2">
                     <button id="timer-start" class="bg-white text-indigo-600 px-4 py-2 rounded-xl font-black text-[10px] uppercase active:scale-95 transition-all">BẮT ĐẦU</button>
-                    <button id="timer-reset" class="bg-indigo-500/50 text-white px-4 py-2 rounded-xl font-black text-[10px] uppercase border border-indigo-400/30 active:scale-95 transition-all">RESET</button>
+                    <button id="timer-reset" class="bg-indigo-500/50 text-white px-4 py-2 rounded-xl font-black text-[10px] uppercase border border-indigo-400/30 active:scale-95 transition-all text-center">LÀM MỚI</button>
                 </div>
             </div>
 
             <div class="p-6 bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-xl flex flex-col justify-between min-h-[160px]">
                 <div>
                     <p class="text-[10px] font-black text-indigo-500 uppercase tracking-widest leading-none">Huy's Station</p>
-                    <h3 id="track-name" class="text-[13px] font-bold mt-2 italic leading-tight text-slate-500 truncate">Sẵn sàng nghe nhạc...</h3>
+                    <h3 id="track-name" class="text-[12px] font-bold mt-2 italic leading-tight text-slate-500 truncate">Nhấn nút bên dưới...</h3>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button id="play-custom-btn" onclick="playCustomMusic()" class="flex-1 bg-indigo-50 dark:bg-indigo-900/30 p-3 rounded-2xl hover:bg-indigo-100 transition-all text-xl">🎵</button>
-                    <button onclick="playDemoMusic()" class="flex-1 bg-slate-50 dark:bg-slate-800 p-3 rounded-2xl hover:bg-slate-100 transition-all text-xl">☕</button>
+                    <label class="flex-1 bg-indigo-50 dark:bg-indigo-900/30 p-3 rounded-2xl hover:bg-indigo-100 transition-all text-xl text-center cursor-pointer" title="Chọn nhạc từ thiết bị">
+                        📁
+                        <input type="file" id="file-input" accept="audio/*" class="hidden" onchange="playFileMusic(event)">
+                    </label>
+                    <button id="play-custom-btn" onclick="playCustomMusic()" class="flex-1 bg-slate-50 dark:bg-slate-800 p-3 rounded-2xl hover:bg-slate-100 transition-all text-xl" title="Phát nhạc từ link/GitHub">
+                        🌍
+                    </button>
                     <button onclick="stopMusic()" class="px-4 py-3 bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-rose-500 rounded-2xl text-[9px] font-black uppercase transition-all">Dừng</button>
                 </div>
                 <audio id="audio-player" loop></audio>
             </div>
 
-            <button onclick="getAIAdvice()" class="h-full bg-gradient-to-br from-purple-600 to-indigo-600 text-white p-6 rounded-[2.5rem] font-black text-xs uppercase tracking-[0.2em] shadow-xl active:scale-95 hover:brightness-110 transition-all">
+            <button onclick="getAIAdvice()" class="h-full bg-gradient-to-br from-purple-600 to-indigo-600 text-white p-6 rounded-[2.5rem] font-black text-xs uppercase tracking-[0.2em] shadow-xl active:scale-95 hover:brightness-110 transition-all text-center">
                 ✨ TRỢ LÝ AI PHÂN TÍCH
             </button>
         </div>
@@ -115,35 +119,35 @@
         <div id="ai-response" class="hidden mb-12 p-6 bg-white dark:bg-slate-900 border border-indigo-100 dark:border-slate-800 rounded-[2.5rem] text-sm italic text-indigo-600 dark:text-indigo-400 shadow-sm animate-pulse"></div>
 
         <form id="taskForm" class="flex flex-col sm:flex-row gap-3 mb-12 bg-white dark:bg-slate-900 p-3 rounded-[2.2rem] shadow-xl border border-slate-100 dark:border-slate-800">
-            <input type="text" id="taskInput" placeholder="Huy muốn làm gì hôm nay? (Ví dụ: Gấp - Viết nhạc)" class="flex-1 px-6 py-4 rounded-2xl outline-none bg-slate-50 dark:bg-slate-800 text-sm font-semibold focus:ring-2 focus:ring-indigo-500 transition-all">
+            <input type="text" id="taskInput" placeholder="Huy muốn làm gì hôm nay? (Ví dụ: Gấp - Nghe nhạc Huy viết)" class="flex-1 px-6 py-4 rounded-2xl outline-none bg-slate-50 dark:bg-slate-800 text-sm font-semibold focus:ring-2 focus:ring-indigo-500 transition-all">
             <button type="submit" class="bg-indigo-600 text-white px-8 py-4 rounded-2xl font-black text-xs uppercase shadow-lg active:scale-95 transition-all">THÊM VIỆC</button>
         </form>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-white dark:bg-slate-900 rounded-[2.8rem] border-2 border-rose-100 dark:border-rose-900/20 overflow-hidden shadow-sm">
-                <div class="bg-rose-50/50 dark:bg-rose-900/10 px-6 py-5 flex justify-between items-center border-b border-rose-100 dark:border-rose-900/20">
-                    <div><span class="text-[10px] font-black text-rose-600 uppercase tracking-widest italic">🔥 LÀM NGAY</span><p class="font-playfair text-xl font-black italic mt-1">Do Now</p></div>
+                <div class="bg-rose-50/50 dark:bg-rose-900/10 px-6 py-5 flex justify-between items-center border-b border-rose-100">
+                    <div><span class="text-[10px] font-black text-rose-600 uppercase tracking-widest italic leading-none">🔥 LÀM NGAY</span><p class="font-playfair text-xl font-black italic mt-1 leading-none">Do Now</p></div>
                     <span id="cnt-do" class="text-3xl font-black text-rose-600/30">0</span>
                 </div>
                 <div id="list-do" class="matrix-box p-4 space-y-3"></div>
             </div>
             <div class="bg-white dark:bg-slate-900 rounded-[2.8rem] border-2 border-indigo-100 dark:border-indigo-900/20 overflow-hidden shadow-sm">
-                <div class="bg-indigo-50/50 dark:bg-indigo-900/10 px-6 py-5 flex justify-between items-center border-b border-indigo-100 dark:border-indigo-900/20">
-                    <div><span class="text-[10px] font-black text-indigo-600 uppercase tracking-widest italic">📅 LÊN LỊCH</span><p class="font-playfair text-xl font-black italic mt-1">Schedule</p></div>
+                <div class="bg-indigo-50/50 dark:bg-indigo-900/10 px-6 py-5 flex justify-between items-center border-b border-indigo-100">
+                    <div><span class="text-[10px] font-black text-indigo-600 uppercase tracking-widest italic leading-none">📅 LÊN LỊCH</span><p class="font-playfair text-xl font-black italic mt-1 leading-none">Schedule</p></div>
                     <span id="cnt-plan" class="text-3xl font-black text-indigo-600/30">0</span>
                 </div>
                 <div id="list-plan" class="matrix-box p-4 space-y-3"></div>
             </div>
             <div class="bg-white dark:bg-slate-900 rounded-[2.8rem] border-2 border-amber-100 dark:border-amber-900/20 overflow-hidden shadow-sm">
-                <div class="bg-amber-50/50 dark:bg-amber-900/10 px-6 py-5 flex justify-between items-center border-b border-amber-100 dark:border-amber-900/20">
-                    <div><span class="text-[10px] font-black text-amber-600 uppercase tracking-widest italic">👥 ỦY QUYỀN</span><p class="font-playfair text-xl font-black italic mt-1">Delegate</p></div>
+                <div class="bg-amber-50/50 dark:bg-amber-900/10 px-6 py-5 flex justify-between items-center border-b border-amber-100">
+                    <div><span class="text-[10px] font-black text-amber-600 uppercase tracking-widest italic leading-none">👥 ỦY QUYỀN</span><p class="font-playfair text-xl font-black italic mt-1 leading-none">Delegate</p></div>
                     <span id="cnt-delegate" class="text-3xl font-black text-amber-600/30">0</span>
                 </div>
                 <div id="list-delegate" class="matrix-box p-4 space-y-3"></div>
             </div>
             <div class="bg-white dark:bg-slate-900 rounded-[2.8rem] border-2 border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
-                <div class="bg-slate-50 dark:bg-slate-800/50 px-6 py-5 flex justify-between items-center border-b border-slate-200 dark:border-slate-800">
-                    <div><span class="text-[10px] font-black text-slate-500 uppercase tracking-widest italic">🗑️ LOẠI BỎ</span><p class="font-playfair text-xl font-black italic mt-1">Eliminate</p></div>
+                <div class="bg-slate-50 dark:bg-slate-800/50 px-6 py-5 flex justify-between items-center border-b border-slate-200">
+                    <div><span class="text-[10px] font-black text-slate-500 uppercase tracking-widest italic leading-none">🗑️ LOẠI BỎ</span><p class="font-playfair text-xl font-black italic mt-1 leading-none">Eliminate</p></div>
                     <span id="cnt-ignore" class="text-3xl font-black text-slate-500/30">0</span>
                 </div>
                 <div id="list-ignore" class="matrix-box p-4 space-y-3"></div>
@@ -151,17 +155,17 @@
         </div>
         
         <footer class="text-center mt-12 pb-8">
-            <div class="opacity-30 text-[9px] font-black uppercase tracking-[0.5em]">Huy's Little Stories - Ver 13.0 Custom Music</div>
+            <div class="opacity-30 text-[9px] font-black uppercase tracking-[0.5em]">Huy's Little Stories - Ver 14.0 Hybrid Music</div>
         </footer>
     </div>
 
     <script>
-        const DB_KEY = 'Huy_Task_Ultimate_V13';
+        const DB_KEY = 'Huy_Task_Ultimate_V14';
         let tasks = [];
         const player = document.getElementById('audio-player');
         const trackNameDisp = document.getElementById('track-name');
 
-        // --- 1. CORE UTILS ---
+        // --- CLOCK ---
         function updateLiveClock() {
             const now = new Date();
             const dateOptions = { weekday: 'long', day: '2-digit', month: '2-digit' };
@@ -185,18 +189,23 @@
             alert("✨ Đã cập nhật cấu hình cho Huy!"); toggleSettings();
         }
 
-        // --- 2. MUSIC ENGINE ---
+        // --- MUSIC ENGINE ---
+        // Cách 3: Chọn từ file máy
+        function playFileMusic(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const url = URL.createObjectURL(file);
+                player.src = url; player.play();
+                trackNameDisp.innerText = "📁 Đang phát: " + file.name;
+                trackNameDisp.classList.add('text-indigo-500', 'music-pulse');
+            }
+        }
+        // Cách 1: Phát từ link/GitHub
         function playCustomMusic() {
             const url = localStorage.getItem('huy_custom_music');
-            if(!url) { alert("Huy ơi, hãy vào cài đặt (⚙️) dán link nhạc .mp3 vào nhé!"); toggleSettings(); return; }
+            if(!url) { alert("Huy ơi, vào cài đặt (⚙️) dán tên file GitHub hoặc link nhạc vào nhé!"); toggleSettings(); return; }
             player.src = url; player.play();
-            trackNameDisp.innerText = "Đang phát nhạc của Huy 🎸";
-            trackNameDisp.classList.add('text-indigo-500', 'music-pulse');
-        }
-        function playDemoMusic() {
-            player.src = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
-            player.play();
-            trackNameDisp.innerText = "Đang phát Lo-fi mặc định ☕";
+            trackNameDisp.innerText = "🌍 Đang phát nhạc từ link/GitHub...";
             trackNameDisp.classList.add('text-indigo-500', 'music-pulse');
         }
         function stopMusic() {
@@ -204,7 +213,7 @@
             trackNameDisp.classList.remove('text-indigo-500', 'music-pulse');
         }
 
-        // --- 3. AI ADVICE ---
+        // --- AI ADVICE ---
         async function getAIAdvice() {
             const key = localStorage.getItem('gemini_api_key');
             if(!key) { alert("Nhập API Key trong ⚙️ để dùng AI nhé!"); toggleSettings(); return; }
@@ -221,7 +230,7 @@
             } catch (e) { resArea.innerText = "Lỗi kết nối AI!"; }
         }
 
-        // --- 4. POMODORO ---
+        // --- POMODORO ---
         let timer; let timeLeft = 25 * 60;
         function updateTimer() {
             const m = Math.floor(timeLeft/60); const s = timeLeft%60;
@@ -234,7 +243,7 @@
         };
         document.getElementById('timer-reset').onclick = () => { clearInterval(timer); timer=null; timeLeft=25*60; updateTimer(); document.getElementById('timer-start').innerText="BẮT ĐẦU"; };
 
-        // --- 5. CORE LOGIC ---
+        // --- CORE LOGIC ---
         function init() {
             if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark');
             const stored = localStorage.getItem(DB_KEY); tasks = stored ? JSON.parse(stored) : [];
