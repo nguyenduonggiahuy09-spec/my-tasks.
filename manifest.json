@@ -1,13 +1,21 @@
 {
-  "name": "TaskFlow Pro",
-  "short_name": "TaskFlow",
+  "name": "TaskFlow Pro | Huy's Little Stories",
+  "short_name": "TaskFlow Pro",
+  "description": "Trạm dừng cho những kế hoạch nhỏ và âm nhạc chill của Huy",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#4f46e5",
+  "background_color": "#0f172a",
   "theme_color": "#4f46e5",
-  "icons": [{
-      "src": "icon.png",
+  "icons": [
+    {
+      "src": "icon.pnj",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "icon.pnj",
       "sizes": "512x512",
-      "type": "image/png"
-  }]
+      "type": "image/jpeg"
+    }
+  ]
 }
