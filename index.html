@@ -2,7 +2,7 @@
 <html lang="vi" class="dark">
 <head>
     <meta charset="UTF-8">
-    <link rel="apple-touch-icon" href="image_19bf1f.jpg">
+    <link rel="apple-touch-icon" href="icon.png">
     <link rel="manifest" href="manifest.json">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>TaskFlow Pro | Huy's Hybrid Music</title>
@@ -24,7 +24,7 @@
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
     </style>
 </head>
-<body class="p-4 sm:p-8 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 italic-style">
+<body class="p-4 sm:p-8 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
 
     <div class="max-w-6xl mx-auto">
         <header class="flex flex-col lg:flex-row items-center justify-between gap-6 mb-8 bg-white dark:bg-slate-900 p-6 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-800">
@@ -155,7 +155,7 @@
         </div>
         
         <footer class="text-center mt-12 pb-8">
-            <div class="opacity-30 text-[9px] font-black uppercase tracking-[0.5em]">Huy's Little Stories - Ver 14.0 Hybrid Music</div>
+            <div class="opacity-30 text-[9px] font-black uppercase tracking-[0.5em]">Huy's Little Stories - Ver 15.0 Offline PWA</div>
         </footer>
     </div>
 
@@ -227,7 +227,7 @@
                 });
                 const data = await response.json();
                 resArea.innerText = "💡 Gửi Huy: " + data.candidates[0].content.parts[0].text;
-            } catch (e) { resArea.innerText = "Lỗi kết nối AI!"; }
+            } catch (e) { resArea.innerText = "Lỗi kết nối AI hoặc mất mạng rồi Huy ơi!"; }
         }
 
         // --- POMODORO ---
@@ -285,6 +285,16 @@
             document.getElementById('progress-circle').setAttribute('stroke-dasharray', `${p}, 100`);
         }
         window.onload = init;
+    </script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('✨ Đã kích hoạt chế độ Offline (PWA) cho Huy!', reg.scope))
+                    .catch(err => console.log('Lỗi cài đặt Offline: ', err));
+            });
+        }
     </script>
 </body>
 </html>
