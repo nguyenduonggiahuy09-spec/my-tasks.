@@ -3,7 +3,7 @@ const urlsToCache = [
   './',
   './index.html',
   './manifest.json',
-  './icon.pnj'
+  './icon.png'
 ];
 
 // Cài đặt và lưu trữ giao diện vào bộ nhớ đệm
